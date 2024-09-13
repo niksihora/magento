@@ -1,0 +1,23 @@
+---
+- name: Install Redis server
+  apt:
+    name: redis-server
+    state: present
+
+- name: Enable and start Redis
+  service:
+    name: redis-server
+    state: started
+    enabled: yes
+
+- name: Configure Magento for Redis
+  copy:
+    dest: /var/www/magento2/app/etc/env.php
+    content: |
+      'session' => [
+        'save' => 'redis',
+        'redis' => [
+          'host' => '127.0.0.1',
+          'port' => '6379',
+        ]
+      ]

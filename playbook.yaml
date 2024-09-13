@@ -1,0 +1,30 @@
+---
+- hosts: localhost
+  become: yes
+  tasks:
+    - include_role:
+        name: common
+
+    - include_role:
+        name: php
+
+    - include_role:
+        name: mysql
+
+    - include_role:
+        name: nginx
+
+    - include_role:
+        name: elasticsearch
+
+    - include_role:
+        name: magento
+
+    - include_role:
+        name: redis
+
+    - include_role:
+        name: varnish
+
+    - include_role:
+        name: phpmyadmin

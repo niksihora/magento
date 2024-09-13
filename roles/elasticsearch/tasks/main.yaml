@@ -1,0 +1,21 @@
+---
+- name: Install Java for Elasticsearch
+  apt:
+    name: openjdk-11-jre
+    state: present
+
+- name: Download Elasticsearch
+  get_url:
+    url: https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.10.2-amd64.deb
+    dest: /tmp/elasticsearch.deb
+
+- name: Install Elasticsearch
+  apt:
+    deb: /tmp/elasticsearch.deb
+
+- name: Enable and start Elasticsearch
+  service:
+    name: elasticsearch
+    state: started
+    enabled: true
+    enabled: yes

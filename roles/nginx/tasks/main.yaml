@@ -1,0 +1,21 @@
+---
+- name: Install NGINX
+  apt:
+    name: nginx
+    state: present
+
+- name: Configure NGINX for test.mgt.com
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/sites-available/test.mgt.com
+
+- name: Enable NGINX site
+  file:
+    src: /etc/nginx/sites-available/test.mgt.com
+    dest: /etc/nginx/sites-enabled/test.mgt.com
+    state: link
+
+- name: Restart NGINX
+  service:
+    name: nginx
+    state: restarted

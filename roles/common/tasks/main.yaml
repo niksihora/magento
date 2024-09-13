@@ -1,0 +1,14 @@
+---
+# Update system and install dependencies
+- name: Update apt package manager
+  apt:
+    update_cache: yes
+
+- name: Install common dependencies
+  apt:
+    name:
+      - curl
+      - unzip
+      - software-properties-common
+      - ca-certificates
+    state: present

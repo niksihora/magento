@@ -1,0 +1,10 @@
+---
+- name: Install PHPMyAdmin
+  apt:
+    name: phpmyadmin
+    state: present
+
+- name: Configure NGINX for phpMyAdmin
+  template:
+    src: phpmyadmin.conf.j2
+    dest: /etc/nginx/sites-available/pma.mgt.com
