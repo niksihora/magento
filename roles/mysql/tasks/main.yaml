@@ -10,12 +10,44 @@
     state: started
     enabled: yes
 
-- name: Secure MySQL Installation
-  mysql_secure_installation:
-    login_password: ''
-    root_password: "{{ mysql_root_password }}"
-    password_updated: true
-    remove_anonymous: yes
-    disallow_remote_root: yes
-    remove_test_db: yes
+# 1. Set the root password (use appropriate password from vars)
+- name: Set MySQL root password
+  mysql_user:
+    name: root
+    host: localhost
+    password: "password"
+    state: present
+  ignore_errors: true  # If root password is already set, this task will fail, so we ignore errors.
+
+# 2. Remove anonymous users
+- name: Remove anonymous MySQL users
+  mysql_user:
+    name: ''
+    host_all: true
+    state: absent
+
+# 3. Disallow remote root login
+- name: Disable remote root login
+  mysql_user:
+    name: root
+    host: "{{ item }}"
+    state: absent
+  loop:
+    - '::1'
+    - '127.0.0.1'
+    - 'localhost'
+    - '%'
+
+# 4. Remove the test database
+- name: Remove MySQL test database
+  mysql_db:
+    name: test
+    state: absent
+
+# 5. Reload privilege tables
+- name: Reload MySQL privilege tables
+  mysql_user:
+    name: root
+    host: localhost
+    priv: '*.*:ALL,GRANT'
     state: present
